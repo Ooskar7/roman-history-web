@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import QuizGame from "../components/QuizGame";
 
 function HomePage() {
   return (
@@ -32,6 +33,7 @@ function HomePage() {
           </Link>
         </div>
       </div>
+      <QuizGame />
     </Layout>
   );
 }

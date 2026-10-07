@@ -24,3 +24,6 @@ backend/.mvn/wrapper/maven-wrapper.jar
 
 # OS / misc
 Thumbs.db
+
+# Internal documentation
+.docs/
