@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import QuizGame from "../components/QuizGame";
 
 function HomePage() {
   return (
@@ -9,7 +8,7 @@ function HomePage() {
       subtitle="Explore the history of Rome from the Monarchy to the Empire."
       backgroundImage="/images/backgrounds/map_117ad_background.png"
     >
-      <div className="card">
+      <div className="card home-feature-card">
         <h2>Welcome</h2>
         <p>
           This React version of the project presents the main historical periods
@@ -32,8 +31,17 @@ function HomePage() {
             Open Historical Political Map
           </Link>
         </div>
+        <div className="card home-feature-card">
+          <h2>Quizz Game</h2>
+          <p>
+            Test your knowledge of ancient Rome with 20 questions: multiple
+            choice, True / False, and chronological ordering.
+          </p>
+          <Link to="/quiz" className="button-link">
+            Start Quizz Game
+          </Link>
+        </div>
       </div>
-      <QuizGame />
     </Layout>
   );
 }

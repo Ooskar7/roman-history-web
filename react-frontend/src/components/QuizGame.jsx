@@ -4,9 +4,9 @@ import { initialAnswer, isCorrectAnswer, quizQuestions } from '../data/quizQuest
 const typeLabels = { choice: 'Multiple choice', boolean: 'True or false', order: 'Chronological order' };
 
 export default function QuizGame() {
-  const [phase, setPhase] = useState('intro');
+  const [phase, setPhase] = useState('playing');
   const [index, setIndex] = useState(0);
-  const [answer, setAnswer] = useState(null);
+  const [answer, setAnswer] = useState(() => initialAnswer(quizQuestions[0]));
   const [checked, setChecked] = useState(false);
   const [score, setScore] = useState(0);
   const heading = useRef(null);
@@ -14,7 +14,7 @@ export default function QuizGame() {
   const correct = checked && isCorrectAnswer(question, answer);
 
   useEffect(() => {
-    if (phase !== 'intro') heading.current?.focus();
+    heading.current?.focus();
   }, [phase, index]);
 
   function start() {
@@ -52,12 +52,6 @@ export default function QuizGame() {
   return (
     <section className="card quiz-game" aria-labelledby="quiz-title">
       <h2 id="quiz-title">Quizz Game</h2>
-      {phase === 'intro' && <>
-        <p>How well do you know ancient Rome? Travel from its legendary kings to the fall of the Western Empire.</p>
-        <p className="quiz-meta">20 questions · Multiple choice · True / False · Order the events</p>
-        <p>Earn one point per question and discover the story behind each answer. No timer — take your time.</p>
-        <button className="button-link" onClick={start}>Start Quizz Game</button>
-      </>}
       {phase === 'playing' && <>
         <div className="quiz-status"><span>Question {index + 1} of {quizQuestions.length}</span><span>Score: {score} / {quizQuestions.length}</span></div>
         <progress className="quiz-progress" value={index + (checked ? 1 : 0)} max={quizQuestions.length} aria-label="Questions completed" />
