@@ -34,7 +34,7 @@ function HomePage() {
         <div className="card home-feature-card">
           <h2>Quizz Game</h2>
           <p>
-            Test your knowledge of ancient Rome with 20 questions: multiple
+            Test your knowledge of ancient Rome with 50 questions and three game lengths: multiple
             choice, True / False, and chronological ordering.
           </p>
           <Link to="/quiz" className="button-link">

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "test": "node src/utils/autoLinkContent.test.js",
+    "test": "node src/utils/autoLinkContent.test.js && node src/utils/quizSession.test.js",
     "preview": "vite preview"
   },
   "dependencies": {
