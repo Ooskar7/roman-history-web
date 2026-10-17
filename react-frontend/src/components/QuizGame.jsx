@@ -1,26 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
 import { initialAnswer, isCorrectAnswer, quizQuestions } from '../data/quizQuestions';
 
+import { createQuizSession, quizModes } from '../utils/quizSession';
+
 const typeLabels = { choice: 'Multiple choice', boolean: 'True or false', order: 'Chronological order' };
 
-export default function QuizGame() {
-  const [phase, setPhase] = useState('intro');
+export default function QuizGame({ title = 'General Roman Knowledge', bank = quizQuestions, modes = quizModes, description }) {
+  const [phase, setPhase] = useState('setup');
+  const [modeId, setModeId] = useState(modes[0].id);
+  const [questions, setQuestions] = useState([]);
+  const mode = modes.find(mode => mode.id === modeId);
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState(null);
   const [checked, setChecked] = useState(false);
   const [score, setScore] = useState(0);
   const heading = useRef(null);
-  const question = quizQuestions[index];
+  const question = questions[index];
   const correct = checked && isCorrectAnswer(question, answer);
 
   useEffect(() => {
-    if (phase !== 'intro') heading.current?.focus();
+    heading.current?.focus();
   }, [phase, index]);
 
   function start() {
+    const session = createQuizSession(modeId, Math.random, bank, modes);
+    setQuestions(session);
     setIndex(0);
     setScore(0);
-    setAnswer(initialAnswer(quizQuestions[0]));
+    setAnswer(initialAnswer(session[0]));
     setChecked(false);
     setPhase('playing');
   }
@@ -33,12 +40,12 @@ export default function QuizGame() {
   }
 
   function next() {
-    if (index === quizQuestions.length - 1) {
+    if (index === questions.length - 1) {
       setPhase('finished');
       return;
     }
     setIndex(index + 1);
-    setAnswer(initialAnswer(quizQuestions[index + 1]));
+    setAnswer(initialAnswer(questions[index + 1]));
     setChecked(false);
   }
 
@@ -51,16 +58,23 @@ export default function QuizGame() {
 
   return (
     <section className="card quiz-game" aria-labelledby="quiz-title">
-      <h2 id="quiz-title">Quizz Game</h2>
-      {phase === 'intro' && <>
-        <p>How well do you know ancient Rome? Travel from its legendary kings to the fall of the Western Empire.</p>
-        <p className="quiz-meta">20 questions · Multiple choice · True / False · Order the events</p>
-        <p>Earn one point per question and discover the story behind each answer. No timer — take your time.</p>
-        <button className="button-link" onClick={start}>Start Quizz Game</button>
+      <h2 id="quiz-title">{title}</h2>
+      {phase === 'setup' && <>
+        <h3 ref={heading} tabIndex={-1}>Choose your game mode</h3>
+        <p>{description || `Explore a bank of ${bank.length} questions with multiple choice, True / False, and chronological ordering. Each game draws questions at random, without repeats.`}</p>
+        <fieldset className="quiz-options">
+          <legend>Choose a game</legend>
+          {modes.map(option => <label key={option.id} className={`quiz-option${modeId === option.id ? ' selected' : ''}`}>
+            <input type="radio" name="quiz-mode" value={option.id} checked={modeId === option.id} onChange={() => setModeId(option.id)} />
+            <span><strong>{option.label}</strong><br />{option.count === bank.length ? `All ${bank.length} questions in random order` : `${option.count} random questions`}</span>
+          </label>)}
+        </fieldset>
+        <button className="button-link" onClick={start}>Start {mode.label}</button>
       </>}
       {phase === 'playing' && <>
-        <div className="quiz-status"><span>Question {index + 1} of {quizQuestions.length}</span><span>Score: {score} / {quizQuestions.length}</span></div>
-        <progress className="quiz-progress" value={index + (checked ? 1 : 0)} max={quizQuestions.length} aria-label="Questions completed" />
+        <p className="quiz-meta">{mode.label}</p>
+        <div className="quiz-status"><span>Question {index + 1} of {questions.length}</span><span>Score: {score} / {questions.length}</span></div>
+        <progress className="quiz-progress" value={index + (checked ? 1 : 0)} max={questions.length} aria-label="Questions completed" />
         <p className="quiz-meta">{typeLabels[question.type]}</p>
         <h3 ref={heading} tabIndex={-1}>{question.prompt}</h3>
         <form onSubmit={check}>
@@ -90,14 +104,14 @@ export default function QuizGame() {
             {!correct && <p>Correct answer: {question.type === 'order' ? question.answer.map(option => question.options[option]).join(' → ') : question.options[question.answer]}</p>}
             <p>{question.explanation}</p>
           </div>
-          <button className="button-link" onClick={next}>{index === quizQuestions.length - 1 ? 'See results' : 'Next question'}</button>
+          <button className="button-link" onClick={next}>{index === questions.length - 1 ? 'See results' : 'Next question'}</button>
         </>}
       </>}
       {phase === 'finished' && <>
         <h3 ref={heading} tabIndex={-1}>Quizz complete!</h3>
-        <p className="quiz-result">{score} / {quizQuestions.length} <span>({Math.round(score / quizQuestions.length * 100)}%)</span></p>
-        <p>{score === quizQuestions.length ? 'A perfect score! You know your Roman history.' : score >= 14 ? 'Well done! You have a strong grasp of Roman history.' : 'Every answer is a chance to learn. Explore the historical periods and try again!'}</p>
-        <button className="button-link" onClick={start}>Play again</button>
+        <p className="quiz-result">{score} / {questions.length} <span>({Math.round(score / questions.length * 100)}%)</span></p>
+        <p>{score === questions.length ? 'A perfect score! You know your Roman history.' : score / questions.length >= 0.7 ? 'Well done! You have a strong grasp of Roman history.' : 'Every answer is a chance to learn. Explore the historical periods and try again!'}</p>
+        <button className="button-link" onClick={() => { setChecked(false); setPhase('setup'); }}>Play again / Choose mode</button>
       </>}
     </section>
   );
