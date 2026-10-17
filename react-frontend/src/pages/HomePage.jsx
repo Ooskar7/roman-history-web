@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import { characters, characterQuizQuestions } from "../data/characterQuizQuestions";
 
 function HomePage() {
   return (
@@ -45,9 +46,10 @@ function HomePage() {
         <div className="card home-feature-card">
           <h2>Historical Roman Characters</h2>
           <p>
-            Explore the people who shaped the Roman world. Start with Julius
-            Caesar, Marcus Aurelius, Scipio Africanus, Augustus, and Seneca:
-            five questions per character, across all three question types.
+            Explore {characters.length} influential figures, from Caesar and
+            Cleopatra to Spartacus and Justinian I. Play {characterQuizQuestions.length}
+            {" "}questions across all characters,
+            or choose one for five questions across all three question types.
           </p>
           <Link to="/quiz/characters" className="button-link">
             Play Historical Roman Characters

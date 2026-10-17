@@ -36,8 +36,9 @@ assert.throws(() => createQuizSession('invalid'), /Unknown quiz mode/);
 // Character sessions must stay separate from general knowledge and retain
 // exactly five questions, including all three formats, for each character.
 const { characters, characterQuizQuestions } = await import('../data/characterQuizQuestions.js');
-assert.equal(characterQuizQuestions.length, 25);
-assert.equal(new Set(characterQuizQuestions.map(q => q.id)).size, 25);
+assert.equal(characters.length, 15);
+assert.equal(characterQuizQuestions.length, 75);
+assert.equal(new Set(characterQuizQuestions.map(q => q.id)).size, 75);
 for (const character of characters) {
   const modes = [{ id: character.id, character: character.id, count: 5 }];
   const session = createQuizSession(character.id, () => 0.5, characterQuizQuestions, modes);
@@ -53,6 +54,6 @@ for (const character of characters) {
     assert.ok(question.explanation);
   }
 }
-const characterSession = createQuizSession('all', () => 0, characterQuizQuestions, [{ id: 'all', count: 25 }]);
+const characterSession = createQuizSession('all', () => 0, characterQuizQuestions, [{ id: 'all', count: characterQuizQuestions.length }]);
 assert.deepEqual(new Set(characterSession), new Set(characterQuizQuestions));
-assert.throws(() => createQuizSession('long', () => 0, characterQuizQuestions), /Not enough questions/);
+assert.throws(() => createQuizSession('oversized', () => 0, characterQuizQuestions, [{ id: 'oversized', count: characterQuizQuestions.length + 1 }]), /Not enough questions/);

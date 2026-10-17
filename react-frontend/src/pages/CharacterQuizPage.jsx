@@ -21,7 +21,7 @@ export default function CharacterQuizPage() {
         title="Historical Roman Characters"
         bank={characterQuizQuestions}
         modes={modes}
-        description="Choose all five characters for a 25-question game, or focus on one character with five questions. Each character has two multiple-choice questions, two True / False questions, and one chronology challenge. Questions appear in random order without repeats."
+        description={`Choose all ${characters.length} characters for a ${characterQuizQuestions.length}-question game, or focus on one character with five questions. Each character has two multiple-choice questions, two True / False questions, and one chronology challenge. Questions appear in random order without repeats.`}
       />
       <details>
         <summary>Further reading</summary>
