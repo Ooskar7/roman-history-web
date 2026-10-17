@@ -32,13 +32,25 @@ function HomePage() {
           </Link>
         </div>
         <div className="card home-feature-card">
-          <h2>Quizz Game</h2>
+          <h2>General Roman Knowledge</h2>
           <p>
-            Test your knowledge of ancient Rome with 50 questions and three game lengths: multiple
-            choice, True / False, and chronological ordering.
+            Test your knowledge of ancient Rome with 50 questions in three formats:
+            multiple choice, True / False, and chronological ordering. Choose a
+            short, medium, or long game.
           </p>
           <Link to="/quiz" className="button-link">
-            Start Quizz Game
+            Play General Roman Knowledge
+          </Link>
+        </div>
+        <div className="card home-feature-card">
+          <h2>Historical Roman Characters</h2>
+          <p>
+            Explore the people who shaped the Roman world. Start with Julius
+            Caesar, Marcus Aurelius, Scipio Africanus, Augustus, and Seneca:
+            five questions per character, across all three question types.
+          </p>
+          <Link to="/quiz/characters" className="button-link">
+            Play Historical Roman Characters
           </Link>
         </div>
       </div>

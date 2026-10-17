@@ -7,10 +7,12 @@ export const quizModes = [
 ];
 
 // Fisher–Yates: sample without repeats and leave the source bank untouched.
-export function createQuizSession(modeId, random = Math.random) {
-  const mode = quizModes.find(mode => mode.id === modeId);
+export function createQuizSession(modeId, random = Math.random, bank = quizQuestions, modes = quizModes) {
+  const mode = modes.find(mode => mode.id === modeId);
   if (!mode) throw new Error('Unknown quiz mode');
-  const shuffled = [...quizQuestions];
+  const pool = mode.character ? bank.filter(question => question.character === mode.character) : bank;
+  if (mode.count > pool.length) throw new Error('Not enough questions for quiz mode');
+  const shuffled = [...pool];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];

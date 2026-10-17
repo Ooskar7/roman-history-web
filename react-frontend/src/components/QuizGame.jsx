@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { initialAnswer, isCorrectAnswer } from '../data/quizQuestions';
+import { initialAnswer, isCorrectAnswer, quizQuestions } from '../data/quizQuestions';
 
 import { createQuizSession, quizModes } from '../utils/quizSession';
 
 const typeLabels = { choice: 'Multiple choice', boolean: 'True or false', order: 'Chronological order' };
 
-export default function QuizGame() {
+export default function QuizGame({ title = 'General Roman Knowledge', bank = quizQuestions, modes = quizModes, description }) {
   const [phase, setPhase] = useState('setup');
-  const [modeId, setModeId] = useState('short');
+  const [modeId, setModeId] = useState(modes[0].id);
   const [questions, setQuestions] = useState([]);
-  const mode = quizModes.find(mode => mode.id === modeId);
+  const mode = modes.find(mode => mode.id === modeId);
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState(null);
   const [checked, setChecked] = useState(false);
@@ -23,7 +23,7 @@ export default function QuizGame() {
   }, [phase, index]);
 
   function start() {
-    const session = createQuizSession(modeId);
+    const session = createQuizSession(modeId, Math.random, bank, modes);
     setQuestions(session);
     setIndex(0);
     setScore(0);
@@ -58,15 +58,15 @@ export default function QuizGame() {
 
   return (
     <section className="card quiz-game" aria-labelledby="quiz-title">
-      <h2 id="quiz-title">Quizz Game</h2>
+      <h2 id="quiz-title">{title}</h2>
       {phase === 'setup' && <>
         <h3 ref={heading} tabIndex={-1}>Choose your game mode</h3>
-        <p>Explore a bank of 50 questions with multiple choice, True / False, and chronological ordering. Each game draws questions at random, without repeats.</p>
+        <p>{description || `Explore a bank of ${bank.length} questions with multiple choice, True / False, and chronological ordering. Each game draws questions at random, without repeats.`}</p>
         <fieldset className="quiz-options">
-          <legend>Game length</legend>
-          {quizModes.map(option => <label key={option.id} className={`quiz-option${modeId === option.id ? ' selected' : ''}`}>
+          <legend>Choose a game</legend>
+          {modes.map(option => <label key={option.id} className={`quiz-option${modeId === option.id ? ' selected' : ''}`}>
             <input type="radio" name="quiz-mode" value={option.id} checked={modeId === option.id} onChange={() => setModeId(option.id)} />
-            <span><strong>{option.label}</strong><br />{option.count === 50 ? 'All 50 questions in random order' : `${option.count} random questions`}</span>
+            <span><strong>{option.label}</strong><br />{option.count === bank.length ? `All ${bank.length} questions in random order` : `${option.count} random questions`}</span>
           </label>)}
         </fieldset>
         <button className="button-link" onClick={start}>Start {mode.label}</button>

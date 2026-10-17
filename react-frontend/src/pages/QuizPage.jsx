@@ -5,7 +5,7 @@ import QuizGame from "../components/QuizGame";
 function QuizPage() {
   return (
     <Layout
-      title="Quizz Game"
+      title="General Roman Knowledge"
       subtitle="Test your knowledge of Rome, from its legendary kings to the fall of the Western Empire."
       backgroundImage="/images/backgrounds/map_117ad_background.png"
     >
