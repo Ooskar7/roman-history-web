@@ -32,29 +32,33 @@ function HomePage() {
             Open Historical Political Map
           </Link>
         </div>
-        <div className="card home-feature-card">
-          <h2>General Roman Knowledge</h2>
-          <p>
-            Test your knowledge of ancient Rome with 50 questions in three formats:
-            multiple choice, True / False, and chronological ordering. Choose a
-            short, medium, or long game.
-          </p>
-          <Link to="/quiz" className="button-link">
-            Play General Roman Knowledge
-          </Link>
-        </div>
-        <div className="card home-feature-card">
-          <h2>Historical Roman Characters</h2>
-          <p>
-            Explore {characters.length} influential figures, from Caesar and
-            Cleopatra to Spartacus and Justinian I. Play {characterQuizQuestions.length}
-            {" "}questions across all characters,
-            or choose one for five questions across all three question types.
-          </p>
-          <Link to="/quiz/characters" className="button-link">
-            Play Historical Roman Characters
-          </Link>
-        </div>
+        <section className="card home-feature-card" aria-labelledby="roman-games-title">
+          <h2 id="roman-games-title">Roman Quizz Games</h2>
+          <p>Choose your challenge: multiple choice, True / False, and chronological ordering.</p>
+          <div className="home-quiz-games">
+            <section className="home-quiz-game" aria-labelledby="general-game-title">
+              <h3 id="general-game-title">General Roman Knowledge</h3>
+              <p>
+                Test your knowledge of ancient Rome with 50 questions.
+                Choose a short, medium, or long game.
+              </p>
+              <Link to="/quiz" className="button-link">
+                Play General Roman Knowledge
+              </Link>
+            </section>
+            <section className="home-quiz-game" aria-labelledby="character-game-title">
+              <h3 id="character-game-title">Historical Roman Characters</h3>
+              <p>
+                Explore {characters.length} influential figures with a bank of
+                {" "}{characterQuizQuestions.length} questions. Choose 10, 25, 50,
+                or the full collection.
+              </p>
+              <Link to="/quiz/characters" className="button-link">
+                Play Historical Roman Characters
+              </Link>
+            </section>
+          </div>
+        </section>
       </div>
     </Layout>
   );

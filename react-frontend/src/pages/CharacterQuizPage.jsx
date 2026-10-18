@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import QuizGame from "../components/QuizGame";
+import { createCharacterQuizModes } from "../utils/quizSession";
 import { characters, characterQuizQuestions, characterQuizSources } from "../data/characterQuizQuestions";
 
 const modes = [
-  { id: 'all', label: 'All Characters', count: characterQuizQuestions.length },
-  ...characters.map(character => ({ id: character.id, character: character.id, label: character.name, count: 5 })),
+  ...createCharacterQuizModes(characterQuizQuestions.length),
+  { id: 'specific', label: 'Specific Character Quizz', selectCharacter: true },
 ];
 
 export default function CharacterQuizPage() {
@@ -21,7 +22,8 @@ export default function CharacterQuizPage() {
         title="Historical Roman Characters"
         bank={characterQuizQuestions}
         modes={modes}
-        description={`Choose all ${characters.length} characters for a ${characterQuizQuestions.length}-question game, or focus on one character with five questions. Each character has two multiple-choice questions, two True / False questions, and one chronology challenge. Questions appear in random order without repeats.`}
+        characters={characters}
+        description={`Explore ${characters.length} characters through multiple choice, True / False, and chronological ordering. Choose 10, 25, or 50 random questions, or play all ${characterQuizQuestions.length} available questions with Full Quizz. Or choose Specific Character Quizz to focus on one person. Every game uses a random order without repeats.`}
       />
       <details>
         <summary>Further reading</summary>
