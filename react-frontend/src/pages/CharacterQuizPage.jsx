@@ -16,7 +16,7 @@ export default function CharacterQuizPage() {
       subtitle="Discover the lives of influential people from the Roman world — Romans and the figures beyond Rome who shaped its history."
       backgroundImage="/images/backgrounds/map_117ad_background.png"
     >
-      <Link to="/" className="button-link secondary-button">Back to Home</Link>
+      <Link to="/quiz-games" className="button-link secondary-button">Back to Roman Quizz Games</Link>
       <p>Earn one point per question. Take your time and learn from each answer.</p>
       <QuizGame
         title="Historical Roman Characters"

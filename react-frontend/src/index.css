@@ -789,14 +789,14 @@ body.lightbox-open {
   .quiz-game { padding: 1.1rem; }
 }
 
-.home-quiz-games {
+.quiz-games-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
-.home-quiz-game {
+.quiz-game-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -806,11 +806,11 @@ body.lightbox-open {
   background: rgba(255, 250, 243, 0.95);
 }
 
-.home-quiz-game p { margin-top: 0; line-height: 1.6; }
-.home-quiz-game .button-link { margin-top: auto; margin-right: 0; }
+.quiz-game-card p { margin-top: 0; line-height: 1.6; }
+.quiz-game-card .button-link { margin-top: auto; margin-right: 0; }
 
 @media (max-width: 700px) {
-  .home-quiz-games { grid-template-columns: 1fr; }
+  .quiz-games-grid { grid-template-columns: 1fr; }
 }
 
 .quiz-character-picker { margin-top: 1.25rem; }

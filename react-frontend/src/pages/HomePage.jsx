@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { characters, characterQuizQuestions } from "../data/characterQuizQuestions";
 
 function HomePage() {
   return (
@@ -34,30 +33,10 @@ function HomePage() {
         </div>
         <section className="card home-feature-card" aria-labelledby="roman-games-title">
           <h2 id="roman-games-title">Roman Quizz Games</h2>
-          <p>Choose your challenge: multiple choice, True / False, and chronological ordering.</p>
-          <div className="home-quiz-games">
-            <section className="home-quiz-game" aria-labelledby="general-game-title">
-              <h3 id="general-game-title">General Roman Knowledge</h3>
-              <p>
-                Test your knowledge of ancient Rome with 50 questions.
-                Choose a short, medium, or long game.
-              </p>
-              <Link to="/quiz" className="button-link">
-                Play General Roman Knowledge
-              </Link>
-            </section>
-            <section className="home-quiz-game" aria-labelledby="character-game-title">
-              <h3 id="character-game-title">Historical Roman Characters</h3>
-              <p>
-                Explore {characters.length} influential figures with a bank of
-                {" "}{characterQuizQuestions.length} questions. Choose 10, 25, 50,
-                or the full collection.
-              </p>
-              <Link to="/quiz/characters" className="button-link">
-                Play Historical Roman Characters
-              </Link>
-            </section>
-          </div>
+          <p>Play a variety of quizz games and put your Roman knowledge to the test.</p>
+          <Link to="/quiz-games" className="button-link">
+            Play Roman Quizz Games
+          </Link>
         </section>
       </div>
     </Layout>
