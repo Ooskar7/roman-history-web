@@ -12,11 +12,16 @@ import QuizPage from "./pages/QuizPage";
 
 import CharacterQuizPage from "./pages/CharacterQuizPage";
 
+import RomanQuotesPage from "./pages/RomanQuotesPage";
+import RomanQuoteDetailPage from "./pages/RomanQuoteDetailPage";
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/roman-quotes" element={<RomanQuotesPage />} />
+        <Route path="/roman-quotes/:slug" element={<RomanQuoteDetailPage />} />
         <Route path="/periods" element={<PeriodsPage />} />
         <Route path="/period/:id" element={<PeriodDetailPage />} />
         <Route path="/event/:id" element={<EventDetailPage />} />

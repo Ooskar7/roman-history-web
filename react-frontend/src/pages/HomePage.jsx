@@ -21,6 +21,11 @@ function HomePage() {
       </div>
 
       <div className="cards-container home-feature-grid">
+        <section className="card home-feature-card" aria-labelledby="roman-quotes-title">
+          <h2 id="roman-quotes-title">Roman Proverbs and Quotes</h2>
+          <p>Discover famous Latin expressions, their English translations, and the stories behind their enduring influence.</p>
+          <Link to="/roman-quotes" className="button-link">Explore Roman Proverbs and Quotes</Link>
+        </section>
         <div className="card home-feature-card">
           <h2>Historical Political Map</h2>
           <p>
