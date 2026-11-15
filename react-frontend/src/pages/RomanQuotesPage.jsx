@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { romanQuotes } from "../data/romanQuotes";
+import { getAllRomanQuotes } from "../api/romanQuotesApi";
+import LoadingMessage from "../components/LoadingMessage";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function RomanQuotesPage() {
+  const [romanQuotes, setRomanQuotes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const controller = new AbortController();
+    getAllRomanQuotes(controller.signal)
+      .then(data => { if (!controller.signal.aborted) setRomanQuotes(data); })
+      .catch(err => { if (!controller.signal.aborted) setError(err.message); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
+  }, []);
   const [query, setQuery] = useState("");
   const search = query.trim().toLocaleLowerCase();
   const matches = romanQuotes.filter(quote =>
@@ -21,6 +34,9 @@ export default function RomanQuotesPage() {
         <p>Discover famous Roman quotations, proverbs, and expressions, alongside later Latin mottos inspired by the classical world. Open an entry for its English translation, meaning, author, cultural context, and historical legacy.</p>
         <p>Some familiar sayings are adaptations or have uncertain origins. Each entry explains what the sources actually support.</p>
       </section>
+      {loading && <LoadingMessage message="Loading proverbs and quotes..." />}
+      {error && <ErrorMessage message={error} />}
+      {!loading && !error && <>
       <div className="search-box">
         <label htmlFor="quote-search" className="search-label">Find a quote, translation, or author</label>
         <input id="quote-search" type="search" className="search-input" value={query}
@@ -39,6 +55,7 @@ export default function RomanQuotesPage() {
         ))}
       </div>
       {matches.length === 0 && <div className="card"><h2>No expressions found</h2><p>Try another Latin phrase, English word, or author.</p><button type="button" className="button-link quote-reset" onClick={() => setQuery("")}>Show all expressions</button></div>}
+      </>}
     </Layout>
   );
 }
