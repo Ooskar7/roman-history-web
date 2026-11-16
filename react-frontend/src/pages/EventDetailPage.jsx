@@ -4,37 +4,52 @@ import Layout from "../components/Layout";
 import LoadingMessage from "../components/LoadingMessage";
 import ErrorMessage from "../components/ErrorMessage";
 import ClickableImage from "../components/ClickableImage";
+import ArticleNavigation from "../components/ArticleNavigation";
 import ArticleRenderer from "../components/ArticleRenderer";
 import { formatYear } from "../utils/formatters";
-import { getEventById, getPeriodById } from "../api/periodApi";
+import { getEventById, getPeriodById, getEventsByPeriodId } from "../api/periodApi";
 
 function EventDetailPage() {
   const { id } = useParams();
 
   const [event, setEvent] = useState(null);
+  const [siblings, setSiblings] = useState([]);
   const [period, setPeriod] = useState(null);
   const [markdownContent, setMarkdownContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError("");
+    setPeriod(null);
+    setEvent(null);
+    setSiblings([]);
+    window.scrollTo(0, 0);
+
     async function fetchEventDetails() {
       try {
-        const eventResponse = await getEventById(id);
-
-        setEvent(eventResponse.event);
-        setMarkdownContent(eventResponse.markdownContent);
-
-        const periodData = await getPeriodById(eventResponse.event.periodId);
+        const response = await getEventById(id);
+        if (!active) return;
+        const [periodData, siblingsData] = await Promise.all([
+          getPeriodById(response.event.periodId),
+          getEventsByPeriodId(response.event.periodId),
+        ]);
+        if (!active) return;
+        setEvent(response.event);
+        setMarkdownContent(response.markdownContent);
         setPeriod(periodData);
+        setSiblings([...siblingsData].sort((a, b) => a.year - b.year));
       } catch (err) {
-        setError(err.message);
+        if (active) setError(err.message);
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     }
 
     fetchEventDetails();
+    return () => { active = false; };
   }, [id]);
 
   return (
@@ -56,7 +71,8 @@ function EventDetailPage() {
       {loading && <LoadingMessage message="Loading event details..." />}
       {error && <ErrorMessage message={error} />}
 
-      {!loading && !error && event && (
+      {!loading && !error && event && String(event.id) === id && (
+        <>
         <article className="article-card">
           <header className="article-header">
             <h1>{event.title}</h1>
@@ -78,6 +94,13 @@ function EventDetailPage() {
 
           <ArticleRenderer content={markdownContent} currentPath={`/event/${id}`} />
         </article>
+        <ArticleNavigation
+          items={siblings}
+          currentId={id}
+          basePath="/event"
+          labelKey="title"
+        />
+        </>
       )}
     </Layout>
   );

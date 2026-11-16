@@ -788,3 +788,45 @@ body.lightbox-open {
   .quiz-options { grid-template-columns: 1fr; }
   .quiz-game { padding: 1.1rem; }
 }
+
+.quiz-games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.quiz-game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.25rem;
+  border: 1px solid #e0ccb2;
+  border-radius: 8px;
+  background: rgba(255, 250, 243, 0.95);
+}
+
+.quiz-game-card p { margin-top: 0; line-height: 1.6; }
+.quiz-game-card .button-link { margin-top: auto; margin-right: 0; }
+
+@media (max-width: 700px) {
+  .quiz-games-grid { grid-template-columns: 1fr; }
+}
+
+.quiz-character-picker { margin-top: 1.25rem; }
+.quiz-character-picker select { width: 100%; max-width: 32rem; }
+
+/* Roman expressions collection and reading pages */
+.quotes-introduction { margin-top: 1.5rem; line-height: 1.7; }
+.quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1.25rem; }
+.quote-card { display: flex; flex-direction: column; align-items: flex-start; border-top: 3px solid #8b5e3c; }
+.quote-category { display: inline-block; color: #6f492f; background: #f4eee5; border-radius: 4px; padding: .3rem .6rem; font-size: .8rem; font-weight: bold; margin-bottom: 1rem; }
+.quote-card h2 { font-family: Georgia, serif; font-size: 1.5rem; line-height: 1.3; }
+.quote-card h2 a { color: #654027; text-underline-offset: 3px; }
+.quote-translation { font-family: Georgia, serif; font-size: 1.2rem; line-height: 1.6; margin-top: 0; }
+.quote-author { color: #555; font-size: .95rem; line-height: 1.5; }
+.quote-card .button-link { margin-top: auto; }
+.quote-pagination, .article-pagination { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-top: 1rem; }
+.quote-pagination a, .article-pagination a { flex: 1 1 240px; line-height: 1.5; }
+.quote-reset { border: 0; cursor: pointer; font: inherit; }
+.quotes-grid a:focus-visible, .quote-pagination a:focus-visible, .article-pagination a:focus-visible, .quote-reset:focus-visible { outline: 3px solid #5b3a29; outline-offset: 4px; }

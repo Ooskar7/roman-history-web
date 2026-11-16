@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { initialAnswer, isCorrectAnswer, quizQuestions } from '../data/quizQuestions';
 
-import { createQuizSession, quizModes } from '../utils/quizSession';
+import { createQuizSession, createSpecificCharacterMode, quizModes } from '../utils/quizSession';
 
 const typeLabels = { choice: 'Multiple choice', boolean: 'True or false', order: 'Chronological order' };
 
-export default function QuizGame({ title = 'General Roman Knowledge', bank = quizQuestions, modes = quizModes, description }) {
+export default function QuizGame({ title = 'General Roman Knowledge', bank = quizQuestions, modes = quizModes, description, characters = [] }) {
   const [phase, setPhase] = useState('setup');
   const [modeId, setModeId] = useState(modes[0].id);
+  const [characterId, setCharacterId] = useState('');
+  const selectedCharacter = characters.find(character => character.id === characterId);
+  const characterQuestionCount = bank.filter(question => question.character === characterId).length;
   const [questions, setQuestions] = useState([]);
   const mode = modes.find(mode => mode.id === modeId);
   const [index, setIndex] = useState(0);
@@ -23,7 +26,9 @@ export default function QuizGame({ title = 'General Roman Knowledge', bank = qui
   }, [phase, index]);
 
   function start() {
-    const session = createQuizSession(modeId, Math.random, bank, modes);
+    if (mode.selectCharacter && (!selectedCharacter || !characterQuestionCount)) return;
+    const sessionModes = mode.selectCharacter ? [createSpecificCharacterMode(characterId, bank)] : modes;
+    const session = createQuizSession(modeId, Math.random, bank, sessionModes);
     setQuestions(session);
     setIndex(0);
     setScore(0);
@@ -66,13 +71,21 @@ export default function QuizGame({ title = 'General Roman Knowledge', bank = qui
           <legend>Choose a game</legend>
           {modes.map(option => <label key={option.id} className={`quiz-option${modeId === option.id ? ' selected' : ''}`}>
             <input type="radio" name="quiz-mode" value={option.id} checked={modeId === option.id} onChange={() => setModeId(option.id)} />
-            <span><strong>{option.label}</strong><br />{option.count === bank.length ? `All ${bank.length} questions in random order` : `${option.count} random questions`}</span>
+            <span><strong>{option.label}</strong><br />{option.selectCharacter ? 'Choose one character and play all their questions' : option.count === bank.length ? `All ${bank.length} questions in random order` : `${option.count} random questions`}</span>
           </label>)}
         </fieldset>
-        <button className="button-link" onClick={start}>Start {mode.label}</button>
+        {mode.selectCharacter && <div className="quiz-character-picker">
+          <label className="search-label" htmlFor="quiz-character">Choose a character</label>
+          <select id="quiz-character" className="filter-select" value={characterId} onChange={event => setCharacterId(event.target.value)} aria-describedby="quiz-character-help">
+            <option value="">Select a character…</option>
+            {[...characters].sort((a, b) => a.name.localeCompare(b.name, 'en')).map(character => <option key={character.id} value={character.id}>{character.name}</option>)}
+          </select>
+          <p id="quiz-character-help" role="status">{selectedCharacter ? `${characterQuestionCount} questions about ${selectedCharacter.name}, in random order without repeats.` : `Choose from ${characters.length} available characters.`}</p>
+        </div>}
+        <button className="button-link" onClick={start} disabled={mode.selectCharacter && (!selectedCharacter || !characterQuestionCount)}>Start {mode.label}</button>
       </>}
       {phase === 'playing' && <>
-        <p className="quiz-meta">{mode.label}</p>
+        <p className="quiz-meta">{mode.label}{mode.selectCharacter && ` — ${selectedCharacter.name}`}</p>
         <div className="quiz-status"><span>Question {index + 1} of {questions.length}</span><span>Score: {score} / {questions.length}</span></div>
         <progress className="quiz-progress" value={index + (checked ? 1 : 0)} max={questions.length} aria-label="Questions completed" />
         <p className="quiz-meta">{typeLabels[question.type]}</p>
@@ -109,6 +122,7 @@ export default function QuizGame({ title = 'General Roman Knowledge', bank = qui
       </>}
       {phase === 'finished' && <>
         <h3 ref={heading} tabIndex={-1}>Quizz complete!</h3>
+        {mode.selectCharacter && <p className="quiz-meta">{selectedCharacter.name}</p>}
         <p className="quiz-result">{score} / {questions.length} <span>({Math.round(score / questions.length * 100)}%)</span></p>
         <p>{score === questions.length ? 'A perfect score! You know your Roman history.' : score / questions.length >= 0.7 ? 'Well done! You have a strong grasp of Roman history.' : 'Every answer is a chance to learn. Explore the historical periods and try again!'}</p>
         <button className="button-link" onClick={() => { setChecked(false); setPhase('setup'); }}>Play again / Choose mode</button>

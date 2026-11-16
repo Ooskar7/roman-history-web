@@ -21,6 +21,11 @@ function HomePage() {
       </div>
 
       <div className="cards-container home-feature-grid">
+        <section className="card home-feature-card" aria-labelledby="roman-quotes-title">
+          <h2 id="roman-quotes-title">Roman Proverbs and Quotes</h2>
+          <p>Discover famous Latin expressions, their English translations, and the stories behind their enduring influence.</p>
+          <Link to="/roman-quotes" className="button-link">Explore Roman Proverbs and Quotes</Link>
+        </section>
         <div className="card home-feature-card">
           <h2>Historical Political Map</h2>
           <p>
@@ -31,28 +36,13 @@ function HomePage() {
             Open Historical Political Map
           </Link>
         </div>
-        <div className="card home-feature-card">
-          <h2>General Roman Knowledge</h2>
-          <p>
-            Test your knowledge of ancient Rome with 50 questions in three formats:
-            multiple choice, True / False, and chronological ordering. Choose a
-            short, medium, or long game.
-          </p>
-          <Link to="/quiz" className="button-link">
-            Play General Roman Knowledge
+        <section className="card home-feature-card" aria-labelledby="roman-games-title">
+          <h2 id="roman-games-title">Roman Quizz Games</h2>
+          <p>Play a variety of quizz games and put your Roman knowledge to the test.</p>
+          <Link to="/quiz-games" className="button-link">
+            Play Roman Quizz Games
           </Link>
-        </div>
-        <div className="card home-feature-card">
-          <h2>Historical Roman Characters</h2>
-          <p>
-            Explore the people who shaped the Roman world. Start with Julius
-            Caesar, Marcus Aurelius, Scipio Africanus, Augustus, and Seneca:
-            five questions per character, across all three question types.
-          </p>
-          <Link to="/quiz/characters" className="button-link">
-            Play Historical Roman Characters
-          </Link>
-        </div>
+        </section>
       </div>
     </Layout>
   );

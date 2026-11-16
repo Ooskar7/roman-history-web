@@ -9,8 +9,8 @@ function QuizPage() {
       subtitle="Test your knowledge of Rome, from its legendary kings to the fall of the Western Empire."
       backgroundImage="/images/backgrounds/map_117ad_background.png"
     >
-      <Link to="/" className="button-link secondary-button">
-        Back to Home
+      <Link to="/quiz-games" className="button-link secondary-button">
+        Back to Roman Quizz Games
       </Link>
       <p>
         Earn one point per question and discover the story behind each answer.
