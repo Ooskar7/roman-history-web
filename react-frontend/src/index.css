@@ -826,7 +826,7 @@ body.lightbox-open {
 .quote-translation { font-family: Georgia, serif; font-size: 1.2rem; line-height: 1.6; margin-top: 0; }
 .quote-author { color: #555; font-size: .95rem; line-height: 1.5; }
 .quote-card .button-link { margin-top: auto; }
-.quote-pagination { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-top: 1rem; }
-.quote-pagination a { flex: 1 1 240px; line-height: 1.5; }
+.quote-pagination, .article-pagination { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-top: 1rem; }
+.quote-pagination a, .article-pagination a { flex: 1 1 240px; line-height: 1.5; }
 .quote-reset { border: 0; cursor: pointer; font: inherit; }
-.quotes-grid a:focus-visible, .quote-pagination a:focus-visible, .quote-reset:focus-visible { outline: 3px solid #5b3a29; outline-offset: 4px; }
+.quotes-grid a:focus-visible, .quote-pagination a:focus-visible, .article-pagination a:focus-visible, .quote-reset:focus-visible { outline: 3px solid #5b3a29; outline-offset: 4px; }
